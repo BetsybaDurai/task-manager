@@ -1,10 +1,21 @@
 // CRUD create read update delete
 
-const mongodb = require('mongodb');
-const MongoClient = mongodb.MongoClient;
+// const mongodb = require('mongodb');
+// const MongoClient = mongodb.MongoClient;
+// const ObjectID = mongodb.ObjectID;
+
+const { MongoClient, ObjectID } = require('mongodb'); // destructuring
 
 const connectionURL = 'mongodb://127.0.0.1:27017';
 const databaseName = 'task-manager';
+
+const id = new ObjectID();
+console.log(id)
+console.log(id.getTimestamp());
+console.log(id.id.length); // returns in bytes
+console.log(id.toHexString());
+console.log(id.toHexString().length);
+
 
 MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) => {
     if(error) {
@@ -15,15 +26,16 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
 
     const db = client.db(databaseName);
 
-    // db.collection('users').insertOne({
-    //     name: 'Sowmya',
-    //     age:27
-    // }, (error, result) => {
-    //     if (error) {
-    //         console.log('Unable to insert user')
-    //     }
-    //     console.log(result.ops)
-    // })
+    db.collection('users').insertOne({
+        _id:id,
+        name: 'Priya',
+        age:27
+    }, (error, result) => {
+        if (error) {
+            console.log('Unable to insert user')
+        }
+        console.log(result.ops)
+    })
 
     // db.collection('users').insertMany([
     //     {
@@ -44,24 +56,24 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
     //     console.log(result.ops)
     // })
 
-    db.collection('tasks').insertMany([
-        { 
-            description: 'Task1',
-            completed :false
-        },
-        { 
-            description: 'Task2',
-            completed :true
-        },
-        { 
-            description: 'Task3',
-            completed :true
-        },
-     ],  (error, result) => {
-        if (error) {
-            return console.log('Unable to insert documents of tasks!')
-        }
+    // db.collection('tasks').insertMany([
+    //     { 
+    //         description: 'Task1',
+    //         completed :false
+    //     },
+    //     { 
+    //         description: 'Task2',
+    //         completed :true
+    //     },
+    //     { 
+    //         description: 'Task3',
+    //         completed :true
+    //     },
+    //  ],  (error, result) => {
+    //     if (error) {
+    //         return console.log('Unable to insert documents of tasks!')
+    //     }
         
-        console.log(result.ops)
-    })
+    //     console.log(result.ops)
+    // })
 })
