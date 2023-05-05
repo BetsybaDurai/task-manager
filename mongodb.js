@@ -9,13 +9,6 @@ const { MongoClient, ObjectID } = require('mongodb'); // destructuring
 const connectionURL = 'mongodb://127.0.0.1:27017';
 const databaseName = 'task-manager';
 
-const id = new ObjectID();
-console.log(id)
-console.log(id.getTimestamp());
-console.log(id.id.length); // returns in bytes
-console.log(id.toHexString());
-console.log(id.toHexString().length);
-
 
 MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) => {
     if(error) {
@@ -26,54 +19,38 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
 
     const db = client.db(databaseName);
 
-    db.collection('users').insertOne({
-        _id:id,
-        name: 'Priya',
-        age:27
-    }, (error, result) => {
+     db.collection('users').findOne({ name:"Betsyba", age:27 }, (error, user) => {
         if (error) {
-            console.log('Unable to insert user')
+            console.log('Unable to fetch')
         }
-        console.log(result.ops)
+        console.log(user)
+        
+     })
+    
+    db.collection('users').findOne({ _id: new ObjectID("64537d9460d1d784f459ea27") }, (error, user) => {
+        if (error) {
+            console.log('Unable to fetch')
+        }
+        console.log(user)
+        
+    })
+    // find menthod uses the cursor
+    db.collection('users').find({ age: 27 }).toArray((error, users) => {
+        console.log(users)
     })
 
-    // db.collection('users').insertMany([
-    //     {
-    //         name: 'Seeni',
-    //         age:30
-    //     }, {
-    //         name: 'Gowtham',
-    //         age:30
-    //     }, {
-    //         name: 'Mugudan',
-    //         age:30
-    //     }
-    // ], (error, result) => {
-    //     if (error) {
-    //         return console.log('Unable to insert documents!')
-    //     }
-        
-    //     console.log(result.ops)
-    // })
+    db.collection('users').find({ age: 27 }).count((error, count) => {
+        console.log(count)
+    })
 
-    // db.collection('tasks').insertMany([
-    //     { 
-    //         description: 'Task1',
-    //         completed :false
-    //     },
-    //     { 
-    //         description: 'Task2',
-    //         completed :true
-    //     },
-    //     { 
-    //         description: 'Task3',
-    //         completed :true
-    //     },
-    //  ],  (error, result) => {
-    //     if (error) {
-    //         return console.log('Unable to insert documents of tasks!')
-    //     }
-        
-    //     console.log(result.ops)
-    // })
+    // Goal: use findone to fetch last task by its id
+    db.collection('tasks').findOne({ _id: new ObjectID("6453859212bbf6bd60caba6b") }, (error, task) => {
+        if (error) { console.log('Unable to fetch task') }
+        console.log(task);
+    })
+
+    //Goal : Use find to fetch all tasks that are not completed
+    db.collection('tasks').find({ completed:false }).toArray((error,tasks) => {
+         console.log(tasks)
+     })
 })
