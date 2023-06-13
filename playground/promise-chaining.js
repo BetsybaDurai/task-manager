@@ -1,7 +1,8 @@
 require('../src/db/mongoose')
 const User = require('../src/models/user')
 
-// User.findByIdAndUpdate('6466475ffb877d5b25e27f0f', { age: 1 }).then((user) => {
+
+// User.findByIdAndUpdate('64665305fb877d5b25e27f10', { age: 1 }).then((user) => {
 //     console.log(user)
 //     return User.countDocuments({age:1})
 // }).then((result) => {
@@ -21,3 +22,4 @@ updateAgeAndCount('64665305fb877d5b25e27f10', 2).then((count) => {
 }).catch((e) => {
     console.log(e)
 })
+
